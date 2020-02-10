@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>space.shooter.com</groupId>
+    <artifactId>SpaceShooterFx</artifactId>
+    <version>0.0.1</version>
+
+    <properties>
+        <java.version>13</java.version>
+        <maven.compiler.source>13</maven.compiler.source>
+        <maven.compiler.target>13</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.almasb</groupId>
+            <artifactId>fxgl</artifactId>
+            <version>11.7</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/jpackage-app</outputDirectory>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>space.shooter.com.SpaceShooter</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>runtime</includeScope>
+                            <outputDirectory>${project.build.directory}/jpackage-app/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>perform</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>${env.JPACKAGE_HOME}/jpackage</executable>
+                            <arguments>
+                                <argument>--type</argument>
+                                <argument>msi</argument>
+
+                                <argument>-d</argument>
+                                <argument>${project.build.directory}</argument>
+
+                                <argument>-n</argument>
+                                <argument>SpaceShooter</argument>
+
+<!--                                <argument>&#45;&#45;resource-dir</argument>-->
+<!--                                <argument>${project.basedir}/src/main/deploy/jpackage</argument>-->
+
+<!--                                <argument>&#45;&#45;icon</argument>-->
+<!--                                <argument>${project.basedir}/src/main/deploy/jpackage/FXDesktopSearch.ico</argument>-->
+
+                                <argument>-i</argument>
+                                <argument>${project.build.directory}/jpackage-app</argument>
+
+                                <argument>--main-class</argument>
+                                <argument>space.shooter.com.SpaceShooter</argument>
+
+                                <argument>--main-jar</argument>
+                                <argument>SpaceShooterFx-0.0.1.jar</argument>
+
+                                <argument>--app-version</argument>
+                                <argument>0.0.1</argument>
+
+                                <argument>--temp</argument>
+                                <argument>${project.build.directory}/jpackage</argument>
+
+                                <argument>--runtime-image</argument>
+<!--                                <argument>${env.JAVA_HOME}</argument>-->
+                                <argument>c:\Program Files\Java\jdk-13.0.1\</argument>
+
+<!--                                <argument>@${project.basedir}/src/main/deploy/jpackage/common.options</argument>-->
+<!--                                <argument>@${project.basedir}/src/main/deploy/jpackage/windows.options</argument>-->
+
+                                <argument>--java-options</argument>
+                                <argument>-Duser.dir=${user.home}</argument>
+
+                                <argument>--win-menu</argument>
+                                <argument>--win-shortcut</argument>
+                                <argument>--win-menu-group</argument>
+
+                                <argument>--verbose</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
