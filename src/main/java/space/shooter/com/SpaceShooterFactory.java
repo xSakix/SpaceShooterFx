@@ -66,7 +66,8 @@ public class SpaceShooterFactory implements EntityFactory {
                 .viewWithBBox(new Circle(2, Color.RED))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(new Point2D(1,0),1550), new OffscreenCleanComponent())
-                .with(new DamageComponent(100,200,0.25f))
+//                .with(new DamageComponent(100,200,0.25f))
+                .with(new DamageComponent(FXGL.geti("player_dmg_min"),FXGL.geti("player_dmg_max"),FXGL.getd("player_dmg_crit")))
                 .build();
     }
 
@@ -81,7 +82,7 @@ public class SpaceShooterFactory implements EntityFactory {
                 .viewWithBBox(laser)
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(new Point2D(-1,0),350), new OffscreenCleanComponent())
-                .with(new DamageComponent(100,150,0.1f))
+                .with(new DamageComponent(100,150,0.1))
                 .build();
     }
 
@@ -98,7 +99,7 @@ public class SpaceShooterFactory implements EntityFactory {
                 .viewWithBBox(texture("IcePick_64x64.png",64*30,64).toAnimatedTexture(30,Duration.seconds(1)).play())
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(new Point2D(-1,0),350), new OffscreenCleanComponent())
-                .with(new DamageComponent(200,500,0.05f))
+                .with(new DamageComponent(200,500,0.05))
                 .build();
     }
 
@@ -113,7 +114,7 @@ public class SpaceShooterFactory implements EntityFactory {
                 .viewWithBBox(texture("pixel_laser_small_blue.png"))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(new Point2D(-1,0),350), new OffscreenCleanComponent())
-                .with(new DamageComponent(40,50,0.5f))
+                .with(new DamageComponent(40,50,0.5))
                 .build();
     }
 
@@ -208,6 +209,18 @@ public class SpaceShooterFactory implements EntityFactory {
 //                .view(texture("explosion.png").toAnimatedTexture(16, Duration.seconds(0.66)).play())
                 .with(new ExpireCleanComponent(Duration.seconds(0.5)))
                 .with(new ParticleComponent(emitter))
+                .build();
+    }
+
+    @Spawns("Bonus")
+    public Entity newBonus(SpawnData data){
+        return entityBuilder()
+                .type(ComponentTypes.BONUS)
+                .from(data)
+                .at(data.getX(),data.getY())
+                .viewWithBBox(texture("SmallStar_64x64.gif"))
+                .with(new CollidableComponent(true))
+                .with(new ProjectileComponent(new Point2D(-1,0),1), new OffscreenCleanComponent())
                 .build();
     }
 

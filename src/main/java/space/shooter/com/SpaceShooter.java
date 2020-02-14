@@ -17,10 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import space.shooter.com.collisions.BulletEnemyHandler;
-import space.shooter.com.collisions.BulletStationEnemyHandler;
-import space.shooter.com.collisions.BulletStationHandler;
-import space.shooter.com.collisions.PlayerBulletHandler;
+import space.shooter.com.collisions.*;
 import space.shooter.com.components.ComponentTypes;
 import space.shooter.com.components.PlayerComponent;
 import space.shooter.com.components.Station;
@@ -65,6 +62,9 @@ public class SpaceShooter extends GameApplication {
 //        vars.put("rockets",10);
 //        vars.put("heat",0);
 //        vars.put("overheating",false);
+        vars.put("player_dmg_min",100);
+        vars.put("player_dmg_max",200);
+        vars.put("player_dmg_crit",0.25);
         vars.put("score",0);
     }
 
@@ -89,13 +89,24 @@ public class SpaceShooter extends GameApplication {
         },Duration.seconds(1));
 
         run(this::spawnEnemies, Duration.seconds(1));
+        run(this::spawnBonus, Duration.seconds(10));
     }
 
+    private void spawnBonus() {
+        if(byType(ComponentTypes.BONUS).size() >= 3){
+            return;
+        }
+        int max = FXGLMath.random(1,3);
+        for(int i = 0;i < max;i++) {
+            spawn("Bonus", new SpawnData(playerComponent.getEntity().getPosition().getX() + FXGLMath.random(1400, 1600), getAppHeight() / 2 + FXGLMath.random(-400, 400)));
+        }
+    }
 
 
     @Override
     protected void initInput() {
         super.initInput();
+
 //        getInput().addAction(new UserAction("shoot") {
 //            @Override
 //            protected void onActionBegin() {
@@ -128,11 +139,14 @@ public class SpaceShooter extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new BulletEnemyHandler());
         getPhysicsWorld().addCollisionHandler(new BulletStationEnemyHandler());
         getPhysicsWorld().addCollisionHandler(new BulletStationHandler());
+        getPhysicsWorld().addCollisionHandler(new BulletBonusHandler());
     }
 
     @Override
     protected void initUI() {
         super.initUI();
+
+        getGameScene().setUIMouseTransparent(true);
 
         ProgressBar hp = new ProgressBar(false);
         hp.setHeight(10.);

@@ -7,9 +7,9 @@ public class DamageComponent extends Component {
 
     private int minDmg = 0;
     private int maxDmg = Integer.MAX_VALUE;
-    private float critical = 0.0f;
+    private double critical = 0.0;
 
-    public DamageComponent(int minDmg, int maxDmg, float critical) {
+    public DamageComponent(int minDmg, int maxDmg, double critical) {
         this.minDmg = minDmg;
         this.maxDmg = maxDmg;
         this.critical = critical;
@@ -24,4 +24,5 @@ public class DamageComponent extends Component {
 
         return dmg;
     }
+
 }
