@@ -42,7 +42,7 @@ public class Enemy extends Component {
     }
 
     private void shoot() {
-        spawn("EnemyBullet",entity.getPosition().subtract(15,0));
+        spawn("EnemyBullet",entity.getCenter()                                         );
     }
 
     public void die(){

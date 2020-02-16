@@ -30,6 +30,7 @@ public class SpaceShooter extends GameApplication {
 
     private PlayerComponent playerComponent;
     private LocalTimer stationTimer;
+    private LocalTimer bigStationTimer;
 
     public static void main(String[] args) {
         launch(args);
@@ -65,6 +66,9 @@ public class SpaceShooter extends GameApplication {
         vars.put("player_dmg_min",100);
         vars.put("player_dmg_max",200);
         vars.put("player_dmg_crit",0.25);
+        vars.put("num_stations",1);
+        vars.put("min_num_enemies",3);
+        vars.put("max_num_enemies",10);
         vars.put("score",0);
     }
 
@@ -86,6 +90,8 @@ public class SpaceShooter extends GameApplication {
         runOnce(()->{
             stationTimer = newLocalTimer();
             stationTimer.capture();
+            bigStationTimer = newLocalTimer();
+            bigStationTimer.capture();
         },Duration.seconds(1));
 
         run(this::spawnEnemies, Duration.seconds(1));
@@ -176,19 +182,27 @@ public class SpaceShooter extends GameApplication {
         if(!byType(ComponentTypes.STATION).isEmpty()){
             return;
         }
+        if(bigStationTimer != null && bigStationTimer.elapsed(Duration.minutes(5))){
+            spawn("BigStation", new SpawnData(playerComponent.getEntity().getPosition().getX() + FXGLMath.random(800, 1000), getAppHeight() / 2 ));
+            bigStationTimer.capture();
+            stationTimer.capture();
+        }
+
         if(stationTimer != null && stationTimer.elapsed(Duration.minutes(1))){
-            int maxStations = FXGLMath.random(1,3);
-            for(int i = 0;i < 3;i++) {
-                spawn("Station", new SpawnData(playerComponent.getEntity().getPosition().getX() + FXGLMath.random(800, 1000), getAppHeight() / 2 + FXGLMath.random(-200, 200)));
+            for(int i = 0;i < geti("num_stations");i++) {
+                spawn("Station", new SpawnData(playerComponent.getEntity().getPosition().getX() + FXGLMath.random(800, 1200), getAppHeight() / 2 + FXGLMath.random(-500, 500)));
             }
             stationTimer.capture();
+            inc("num_stations",1);
+            inc("min_num_enemies",2);
+            inc("max_num_enemies",2);
         }
 
         if(!byType(ComponentTypes.ENEMY).isEmpty()){
             return;
         }
 
-        int max = FXGLMath.random(2, 10);
+        int max = FXGLMath.random(geti("min_num_enemies"), geti("max_num_enemies"));
         for (int i = 0; i < max; i++) {
             spawn("Enemy", new SpawnData(playerComponent.getEntity().getPosition().getX() + FXGLMath.random(1000, 1400), getAppHeight() / 2 + FXGLMath.random(-400, 400)));
         }

@@ -4,15 +4,16 @@ import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.time.LocalTimer;
+import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
-public class Station extends Component {
+public class BigStation extends Component {
 
     private LocalTimer attackTimer;
     private LocalTimer spawnTimer;
-    private Duration nextAttack = Duration.seconds(5);
+    private Duration nextAttack = Duration.seconds(3);
     private Duration spawnAttack = Duration.seconds(1);
     private double dMove = FXGLMath.random(1,10000);
 
@@ -42,7 +43,7 @@ public class Station extends Component {
                 shoot();
             }
 
-            nextAttack = Duration.seconds(5*FXGLMath.random(0.,1.));
+            nextAttack = Duration.seconds(3*FXGLMath.random(0.,1.));
             attackTimer.capture();
         }
 
@@ -51,22 +52,33 @@ public class Station extends Component {
     }
 
     private void spawnShips() {
-        int numStations = byType(ComponentTypes.STATION).size();
-        numStations = numStations == 0? 1: numStations;
-        if(byType(ComponentTypes.STATION_ENEMY).size() < 30*numStations) {
+        int max_num_enemies = geti("max_num_enemies") * 2;
 
-            int max = FXGLMath.random(10, 30);
+        if(byType(ComponentTypes.ENEMY).size() < max_num_enemies) {
+
+            int max = FXGLMath.random(10, max_num_enemies);
             for (int i = 0; i < max; i++) {
-                spawn("StationEnemy", new SpawnData(getEntity().getPosition().getX() + FXGLMath.random(-200, -20), getEntity().getPosition().getY() + FXGLMath.random(-200, 200)));
+                spawn("Enemy", new SpawnData(getEntity().getPosition().getX() + FXGLMath.random(-200, -20), getEntity().getPosition().getY() + FXGLMath.random(-400, 400)));
             }
         }
+
+        if(byType(ComponentTypes.STATION_ENEMY).size() < max_num_enemies*2) {
+
+            int max = FXGLMath.random(20, max_num_enemies*2);
+            for (int i = 0; i < max; i++) {
+                spawn("StationEnemy", new SpawnData(getEntity().getPosition().getX() + FXGLMath.random(-200, -20), getEntity().getPosition().getY() + FXGLMath.random(-400, 400)));
+            }
+        }
+
     }
 
     private void shoot() {
-        int maxBullets = FXGLMath.random(1, 5);
-        for (int i = 0; i < maxBullets; i++) {
-            spawn("StationBullet", entity.getPosition().subtract(15, FXGLMath.random(-200,200)));
+        Point2D pos = entity.getPosition().subtract(15, FXGLMath.random(-400, 400));
+        if (!byType(ComponentTypes.PLAYER).isEmpty()){
+            var playerPos = byType(ComponentTypes.PLAYER).get(0).getCenter();
+            pos = new Point2D(entity.getPosition().getX()-15,playerPos.getY());
         }
+        spawn("StationBullet", pos);
     }
 
     public void die(){

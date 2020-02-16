@@ -74,7 +74,7 @@ public class SpaceShooterFactory implements EntityFactory {
     @Spawns("EnemyBullet")
     public Entity newEnemyBullet(SpawnData data){
 
-        var laser = texture("pixel_laser_blue.png");
+        var laser = texture("pixel_laser_blue.png",100,30);
         //play sound
         return entityBuilder()
                 .type(ComponentTypes.ENEMY_BULLET)
@@ -82,7 +82,9 @@ public class SpaceShooterFactory implements EntityFactory {
                 .viewWithBBox(laser)
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(new Point2D(-1,0),350), new OffscreenCleanComponent())
-                .with(new DamageComponent(100,150,0.1))
+                .with(new DamageComponent((int)(FXGL.geti("player_dmg_min")*0.75),
+                        (int)(FXGL.geti("player_dmg_max")*0.75),
+                        FXGL.getd("player_dmg_crit")*0.5))
                 .build();
     }
 
@@ -99,7 +101,9 @@ public class SpaceShooterFactory implements EntityFactory {
                 .viewWithBBox(texture("IcePick_64x64.png",64*30,64).toAnimatedTexture(30,Duration.seconds(1)).play())
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(new Point2D(-1,0),350), new OffscreenCleanComponent())
-                .with(new DamageComponent(200,500,0.05))
+                .with(new DamageComponent((int)(FXGL.geti("player_dmg_min")*5),
+                        (int)(FXGL.geti("player_dmg_max")*5),
+                        FXGL.getd("player_dmg_crit")*0.25))
                 .build();
     }
 
@@ -114,7 +118,9 @@ public class SpaceShooterFactory implements EntityFactory {
                 .viewWithBBox(texture("pixel_laser_small_blue.png"))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(new Point2D(-1,0),350), new OffscreenCleanComponent())
-                .with(new DamageComponent(40,50,0.5))
+                .with(new DamageComponent((int)(FXGL.geti("player_dmg_min")*0.25),
+                        (int)(FXGL.geti("player_dmg_max")*0.25),
+                        FXGL.getd("player_dmg_crit")*1.5))
                 .build();
     }
 
@@ -173,6 +179,20 @@ public class SpaceShooterFactory implements EntityFactory {
                 .with(new Station())
                 .with(new KeepOnScreenComponent().onlyVertically())
                 .with(new HealthIntComponent(FXGLMath.random(5000,10000)))
+                .build();
+    }
+
+    @Spawns("BigStation")
+    public Entity newBigStation(SpawnData data){
+
+        return entityBuilder()
+                .type(ComponentTypes.STATION)
+                .from(data)
+                .viewWithBBox(texture("pixel_station_red.png",400,400))
+                .with(new CollidableComponent(true))
+                .with(new BigStation())
+                .with(new KeepOnScreenComponent().onlyVertically())
+                .with(new HealthIntComponent(FXGLMath.random(20000,100000)))
                 .build();
     }
 
