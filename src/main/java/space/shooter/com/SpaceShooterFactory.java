@@ -141,59 +141,196 @@ public class SpaceShooterFactory implements EntityFactory {
     @Spawns("Enemy")
     public Entity newEnemy(SpawnData data){
 
-        return entityBuilder()
-                .type(ComponentTypes.ENEMY)
-                .from(data)
-                .viewWithBBox(texture("pixel_ship_blue_small.png",50,50))
-                .rotate(-90)
-                .with(new CollidableComponent(true))
-                .with(new Enemy())
-                .with(new KeepOnScreenComponent().onlyVertically())
-                .with(new HealthIntComponent(FXGLMath.random(500,1000)))
-                .build();
+        if(geti("level") == 1) {
+            return entityBuilder()
+                    .type(ComponentTypes.ENEMY)
+                    .from(data)
+                    .viewWithBBox(texture("pixel_ship_blue_small.png", 50, 50))
+                    .rotate(-90)
+                    .with(new CollidableComponent(true))
+                    .with(new Enemy())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(500, 1000)))
+                    .build();
+        }else if(geti("level") == 2){
+            return entityBuilder()
+                    .type(ComponentTypes.ENEMY)
+                    .from(data)
+                    .viewWithBBox(texture("SF01.png", 50, 50))
+                    .rotate(-90)
+                    .with(new CollidableComponent(true))
+                    .with(new Enemy())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(500, 1000)*geti("level")))
+                    .build();
+        }else if(geti("level") == 3){
+            return entityBuilder()
+                    .type(ComponentTypes.ENEMY)
+                    .from(data)
+                    .viewWithBBox(texture("level3_enemy.png", 50, 50))
+                    .rotate(-180)
+                    .with(new CollidableComponent(true))
+                    .with(new Enemy())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(500, 1000)*geti("level")))
+                    .build();
+        }else {
+            return entityBuilder()
+                    .type(ComponentTypes.ENEMY)
+                    .from(data)
+                    .viewWithBBox(texture("level4_enemy.png", 50, 50))
+                    .rotate(-90)
+                    .with(new CollidableComponent(true))
+                    .with(new Enemy())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(500, 1000)*geti("level")))
+                    .build();
+        }
     }
 
     @Spawns("StationEnemy")
     public Entity newStationEnemy(SpawnData data){
-
-        return entityBuilder()
-                .type(ComponentTypes.STATION_ENEMY)
-                .from(data)
-                .viewWithBBox(texture("pixel_ship_green_small.png",25,25))
-                .rotate(-90)
-                .with(new CollidableComponent(true))
-                .with(new StationEnemy())
-                .with(new KeepOnScreenComponent().onlyVertically())
-                .with(new HealthIntComponent(100))
-                .build();
+        if(geti("level") == 1) {
+            return entityBuilder()
+                    .type(ComponentTypes.STATION_ENEMY)
+                    .from(data)
+                    .viewWithBBox(texture("pixel_ship_green_small.png", 25, 25))
+                    .rotate(-90)
+                    .with(new CollidableComponent(true))
+                    .with(new StationEnemy())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(100))
+                    .build();
+        }else if(geti("level") == 2){
+            return entityBuilder()
+                    .type(ComponentTypes.STATION_ENEMY)
+                    .from(data)
+                    .viewWithBBox(texture("SF02.png", 25, 25))
+                    .rotate(-90)
+                    .with(new CollidableComponent(true))
+                    .with(new StationEnemy())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(100*geti("level")))
+                    .build();
+        }else if(geti("level") == 3){
+            return entityBuilder()
+                    .type(ComponentTypes.STATION_ENEMY)
+                    .from(data)
+                    .viewWithBBox(texture("level3_station_enemy.png", 25, 25))
+                    .rotate(-180)
+                    .with(new CollidableComponent(true))
+                    .with(new StationEnemy())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(100*geti("level")))
+                    .build();
+        }else{
+            return entityBuilder()
+                    .type(ComponentTypes.STATION_ENEMY)
+                    .from(data)
+                    .viewWithBBox(texture("level4_station_enemy.png", 25, 25))
+                    .rotate(-90)
+                    .with(new CollidableComponent(true))
+                    .with(new StationEnemy())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(100*geti("level")))
+                    .build();
+        }
     }
 
     @Spawns("Station")
     public Entity newStation(SpawnData data){
-
-        return entityBuilder()
-                .type(ComponentTypes.STATION)
-                .from(data)
-                .viewWithBBox(texture("pixel_station_red.png",200,200))
-                .with(new CollidableComponent(true))
-                .with(new Station())
-                .with(new KeepOnScreenComponent().onlyVertically())
-                .with(new HealthIntComponent(FXGLMath.random(5000,10000)))
-                .build();
+        if(geti("level") == 1) {
+            return entityBuilder()
+                    .type(ComponentTypes.STATION)
+                    .from(data)
+                    .viewWithBBox(texture("pixel_station_red.png", 200, 200))
+                    .with(new CollidableComponent(true))
+                    .with(new Station())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(5000, 10000)))
+                    .build();
+        }else if(geti("level") == 2){
+            return entityBuilder()
+                    .type(ComponentTypes.STATION)
+                    .from(data)
+                    .viewWithBBox(texture("SF04.png", 200, 200))
+                    .rotate(-90)
+                    .with(new CollidableComponent(true))
+                    .with(new Station())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(5000, 10000)*geti("level")))
+                    .build();
+        }else if(geti("level") == 3){
+            return entityBuilder()
+                    .type(ComponentTypes.STATION)
+                    .from(data)
+                    .viewWithBBox(texture("level3_station.png", 200, 200))
+                    .rotate(-180)
+                    .with(new CollidableComponent(true))
+                    .with(new Station())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(5000, 10000)*geti("level")))
+                    .build();
+        }else{
+            return entityBuilder()
+                    .type(ComponentTypes.STATION)
+                    .from(data)
+                    .viewWithBBox(texture("level4_station.png", 200, 200))
+                    .rotate(-90)
+                    .with(new CollidableComponent(true))
+                    .with(new Station())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(5000, 10000)*geti("level")))
+                    .build();
+        }
     }
 
     @Spawns("BigStation")
     public Entity newBigStation(SpawnData data){
-
-        return entityBuilder()
-                .type(ComponentTypes.STATION)
-                .from(data)
-                .viewWithBBox(texture("pixel_station_red.png",400,400))
-                .with(new CollidableComponent(true))
-                .with(new BigStation())
-                .with(new KeepOnScreenComponent().onlyVertically())
-                .with(new HealthIntComponent(FXGLMath.random(20000,100000)))
-                .build();
+        if(geti("level") == 1) {
+            return entityBuilder()
+                    .type(ComponentTypes.STATION)
+                    .from(data)
+                    .viewWithBBox(texture("pixel_station_red.png", 400, 400))
+                    .with(new CollidableComponent(true))
+                    .with(new BigStation())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(20000, 100000)))
+                    .build();
+        }else if(geti("level") == 2){
+            return entityBuilder()
+                    .type(ComponentTypes.STATION)
+                    .from(data)
+                    .viewWithBBox(texture("SF04.png", 400, 400))
+                    .rotate(-90)
+                    .with(new CollidableComponent(true))
+                    .with(new BigStation())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(20000, 100000)*geti("level")))
+                    .build();
+        }else if(geti("level") == 3){
+            return entityBuilder()
+                    .type(ComponentTypes.STATION)
+                    .from(data)
+                    .viewWithBBox(texture("level3_station.png", 400, 400))
+                    .rotate(-180)
+                    .with(new CollidableComponent(true))
+                    .with(new BigStation())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(20000, 100000)*geti("level")))
+                    .build();
+        }else{
+            return entityBuilder()
+                    .type(ComponentTypes.STATION)
+                    .from(data)
+                    .viewWithBBox(texture("level4_station.png", 400, 400))
+                    .rotate(-90)
+                    .with(new CollidableComponent(true))
+                    .with(new BigStation())
+                    .with(new KeepOnScreenComponent().onlyVertically())
+                    .with(new HealthIntComponent(FXGLMath.random(20000, 100000)*geti("level")))
+                    .build();
+        }
     }
 
     @Spawns("Explosion")

@@ -35,13 +35,17 @@ public class BulletStationHandler extends CollisionHandler {
 
         if (health.getValue() <= 0) {
             if(enemy.hasComponent(Station.class)) {
-                enemy.getComponent(Station.class).die();
-                byType(ComponentTypes.STATION_ENEMY).stream().forEach(e -> e.getComponent(StationEnemy.class).die());
+                Station station = enemy.getComponent(Station.class);
+                station.killAllStationEnemies();
+                station.die();
                 inc("score", +1000);
             }else if(enemy.hasComponent(BigStation.class)){
                 enemy.getComponent(BigStation.class).die();
                 byType(ComponentTypes.ENEMY).stream().forEach(e -> e.getComponent(Enemy.class).die());
+                byType(ComponentTypes.STATION_ENEMY).stream().forEach(e -> e.getComponent(StationEnemy.class).die());
                 inc("score", +5000);
+                inc("level",1);
+                set("num_stations", 1);
             }
 
         }

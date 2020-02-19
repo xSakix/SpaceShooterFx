@@ -13,6 +13,15 @@ public class StationEnemy extends Component {
     private LocalTimer attackTimer;
     private Duration nextAttack = Duration.seconds(2);
     private double dMove = FXGLMath.random(1,10000);
+    private Station parent;
+
+    public Station getParent() {
+        return parent;
+    }
+
+    public void setParent(Station parent) {
+        this.parent = parent;
+    }
 
     @Override
     public void onAdded() {

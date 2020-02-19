@@ -34,7 +34,12 @@ public class BulletStationEnemyHandler extends CollisionHandler {
         showDamage(bullet.getComponent(DamageComponent.class),enemy.getPosition());
 
         if(health.getValue() <= 0){
-            enemy.getComponent(StationEnemy.class).die();
+            StationEnemy stationEnemy = enemy.getComponent(StationEnemy.class);
+            stationEnemy.die();
+            if(stationEnemy.getParent() != null) {
+                stationEnemy.getParent().removeStationEnemy(enemy);
+            }
+
             inc("score",+50);
         }
     }
@@ -52,15 +57,5 @@ public class BulletStationEnemyHandler extends CollisionHandler {
                 .build();
 
         getGameWorld().addEntity(dmgTextEntity);
-
-//        Animation<?> anim = translate(dmgTextEntity, position.add(random(-25, 0), random(-40, -25)), Duration.seconds(1));
-//        anim.getAnimatedValue().
-//        anim.getAnimatedValue().(Interpolators.EXPONENTIAL.EASE_OUT());
-//        anim.startInPlayState();
-//
-//        Animation<?> anim2 = fadeOut(dmgTextEntity, Duration.seconds(1.15));
-//        anim2.getAnimatedValue().setInterpolator(Interpolators.EXPONENTIAL.EASE_OUT());
-//        anim2.setOnFinished(() -> getGameScene().removeGameView(dmgTextEntity, RenderLayer.DEFAULT));
-//        anim2.startInPlayState();
     }
 }

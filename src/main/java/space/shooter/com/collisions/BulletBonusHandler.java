@@ -49,7 +49,7 @@ public class BulletBonusHandler extends CollisionHandler {
                 showBonusType("DAMAGE INCREASED",bonus.getPosition());
             }else{
                 HealthIntComponent health = playerEntity.getComponent(HealthIntComponent.class);
-                int healthAdded = FXGLMath.random(100, 500);
+                int healthAdded = FXGLMath.random(100, 500)*geti("level");
                 health.setValue(health.getValue()+ healthAdded);
                 showBonusType(String.format("HP+%d",healthAdded),bonus.getPosition());
 
@@ -71,7 +71,6 @@ public class BulletBonusHandler extends CollisionHandler {
                 .build();
 
         getGameWorld().addEntity(bonusTxtEntity);
-
     }
 
 }
